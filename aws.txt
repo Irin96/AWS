@@ -1,0 +1,576 @@
+# AWS  
+
+
+   ## INTRODUCTION 
+     
+     1. IT Terminology 
+       
+       * Network : cables, routers and servers connected with each other.
+       * Router  : A networking device that forwards data packtes between computer
+                   networks. They know where to send your packets on the internet.
+       * Switch  : Takes a packet and send it to the correct server /client on your network.
+
+
+     2. CLOUD COMPUTING
+
+       * Cloud computing is the on-demand delivery of compute power, database storage, applications
+         and other IT resources
+       * Through a cloud services platform with pay-as-you-go pricing.
+       * You can provision exactly the right type and size of computing resources you need.
+       * You can access as many resources as you need, almost instantly.
+       * Simple way to access servers, storage, databases and set of application services.
+
+       ## Private Cloud:
+          - Cloud Services used by a single organisation, not exposed to the public.
+          - Complete control.
+          - Security for sensitive applications.
+          - Meet specific business needs.
+
+        ## Pubic Cloud:
+
+           - Cloud resources owned and operated by a third-party cloud servicce provider delivered
+             over the Internet.
+           - Six Advantages of Cloud computing.
+
+        ## Hybrid Cloud:
+
+           - Keep some servers on permises and extend some capabilities to the cloud.
+           - Control over sensitive assets in your private infrastructure.
+           - Flexibility and cost-effectiveness of the public cloud.
+
+        ## Types of Cloud computing 
+          
+          1.Infrastructure as a Service (IaaS) :
+             - Provide building blocks for cloud IT.
+             - Provides networking computers, data storage space
+             - Highest level of flexibility.
+             - Easy parallel with traditional on permises IT.
+          2. Platform as a Service (PaaS)
+             - Removes the need for your organization to manage the underlying infrastructure.
+             - Focus on the deployment and management of your applications.
+          3. Software as a Service (SaaS)
+             - Completed product that is run and managed by service provider. 
+
+    # IAM - Identity and Access Management .
+        
+        1. IAM: Users & Groups.
+            
+            * IAM = Identity and Access Management, Global Service.
+            * Root account created by default, shouldn't be used or shared.
+            * Users are people within your organisation and can be grouped.
+            * Groups only contain users, not other groups.
+            * Users don't have to belong to a group, and user can belong to multiple groups.
+
+    # Amazon EC2 
+
+        * EC2 is one of the most popular of AWS offering.
+        * EC2 = Elastic Compute Cloud = Infrastructur as a Service.
+        * It mainly consists in the capability of:
+             - Renting virtual machines (EC2)
+             - Storing data on virtual drives (EBS)
+             - Disturbing load across machines (ELB)
+             - Scaling the services using an auto- scaling group (ASG)
+        * Knowing EC2 is fundamental to understand how the Cloud works.
+
+        ## EC2 sizing and configuration options 
+
+            - Operating System (OS): Linux or Windows
+            - Compute power and cores (CPU)
+            - Random-access memory (RAM) 
+            - Storage space:
+                 1. Network-attached (EBS & EFS)
+                 2. Hardware (EC2 Instance Store)
+            - Network card: speed of the card, Public IP address.
+            - Firewall rules: security group
+            - Bootstrap script (configure at first launch):EC2 User Data.
+
+         ## Introduction to Security Groups 
+
+            - Security Groups are the fundamental of network security i AWS
+            - They control how traffic is allowed into or out of our EC2 Instances.
+            - Security groups only contain allow rules.
+            - Security groups rules can reference by IP or by security group.
+
+         ## Classic Ports to know 
+
+            - 22 = SSH (Secure Shell) - log into a Linux Instance 
+            - 21 = FTP (File Transport Protocol) - upload files into a file share 
+            - 22 = SFTP (Secure File Transport Protocol) - upload files using SSH 
+            - 80 = HTTP - access unsecured websites
+            - 443 = HTTPS - access secured websites 
+            - 3389 = RDP (Remote Desktop Protocol) - log into a windows instance       
+
+   #. EC2 Instance Storage 
+    
+         ## EBS Volume  
+
+            - An EBS (Elastic Block Store) Volume is a network drive you can attach to your instances while they run.
+            - It allows your instances to persist data, even after their termination. 
+            - They can only be mounted to one instance at a time (at the CCP level) 
+            - They are bound to a specific availability zone 
+
+         ## EBS Snapshots 
+
+            - Make a backup (snapshot) of your EBS volume at a point in time.
+            - Not necessary to detach volume to do snapshot, but recommended 
+
+         ## AMI Overview 
+
+             - AMI = Amazon Machine Image 
+             - AMI are a customization of an EC2 instance.
+                   * You add your own software, configuration, operating system, monitoring ..
+                   * Faster boot/ configuration time because all your software is pre-packaged 
+                   * AMI are built for a specific region (and can be copied across regions) 
+                   * You can launch EC2 instances from:
+                       - A public AMI: AWS provided 
+         ## AMI Process (from an EC2 instance) 
+
+            - Start an EC2 instance and customize it.
+            - Stop the instance (for data integrity) 
+            - Build an AMI -this will also create EBS snapshots 
+            - Launch instances from other AMIs  
+
+         ## EC2 Instance Store 
+
+             - EBS volumes are network drives with good but "limited" performance
+             - If you need a high-performance hardware disk, use EC2 Instance Store 
+             - Better I/O performance 
+             - EC2 Instance Store lose their storage if they're stopped 
+             - Good for buffer /cache/ scratch data /temporary content 
+             - Risk of data loss if hardware fails 
+             - Backups and Replication are your responsibility 
+
+         ## EFS - Elastic File System 
+
+             - Managed NFS (Network File System) that can be mounted on 100s of EC2 
+             - EFS works with Linux EC2 instances in multi-AZ 
+             - Highly available, scalable, expensive (3x gp2) , pay per use, no capacity planning. 
+
+         ## ELB & ASG - Elastic Load Balancing & Auto Scaling Groups 
+
+            1. Scalability & High Availability 
+                
+               - Scalability means that an application /system can handle greater loads by adapting.
+               - There are two kinds of scalability:
+                       * Vertical Scalability
+                       * Horizontal Scalability(=elasticity)
+               - Scalability is linked but different to High Availability
+               - Vertical Scalability : * It means increasing the size of the instance.
+                                        * For eg: Your application runs on a t2.micro and scaling that application vertically means running it on a t2.large.
+
+               - Horizontal Scalability : * It means increasing the no. of instances /systems for your application.
+                                          * It implies distributed systems.
+               - High Availability : * It usually goes hand in hand with horizontal scaling.
+                                     * It means running your application / sytem in at least 2 Availability Zones.
+                                     * The goal of high availability is to survive a data center loss.
+
+            2. Elastic Load Balancing (ELB) Overview 
+               
+               - Load Balancers are servers that forward internet traffic to multiple servers (EC2 Instances) downstream.
+               - An ELB (Elastic Load Balancer) is a managed load balancer 
+                        * AWS guarantees that it will be working
+                        * AWS takes care of upgrades, maintenance, high availability
+                        * AWS provides only a few configuration knobs
+               - It costs less to setup your own load balancer but it will be a lot more effort on your end.
+               - 3 kinds of load balancers offered by AWS:
+                   * Application Load Balancer (HTTP / HTTPS only) - Layer 7 
+                   * Network Load Balancer (ultra-high performance, allows for TCP) -Layer 4
+                   * Classis Load Balancer (slowly retiring) - Layer 4 & 7
+
+            3. Auto Scaling Groups (ASG) 
+              
+               - The goal of Auto Scaling Group (ASG) is to :
+
+                     * Scale out (add EC2 instances) to match an increased load.
+                     * Scale in (remove EC2 instances) to match a decreased load.
+                     * Ensure we have a minimum and a maximum number of machines running.
+                     * Automatically register new instances to a load balancer.
+                     * Replace unhealthy instances
+               - Cost Savings : only run at an optimal capacity (principle of the cloud)
+         
+
+         # S3 
+
+            * Amazon S3 is one of the main building blocks of AWS 
+            * It's advertised as "infinitely scaling" storage 
+            * Many websites use Amazon S3 as a backbone
+            * Many AWS services uses Amazon S3 as an integration as well 
+            * S3 :
+                
+                - Backup and storage 
+                - Disaster Recovery 
+                - Archive
+                - Hybrid Cloud storage 
+                - Application hosting
+                - Media hosting 
+                - Data lakes & big data analytics 
+                - Software delivery 
+                - Static website 
+            * Amazon S3 Overview -Buckets 
+
+                - Amazon S3 allows people to store objects (files) in "buckets" (directories) 
+                - Buckets must have a globally unique name (across all regions all accounts) 
+                - Buckets are defined at the region level 
+                - S3 looks like a global service but buckets are created in a region 
+                - Naming convention 
+                       * No upperscore
+                       * No underscore
+                       * 3-63 characters long 
+                       * Not an IP
+                       * Must start with lowercase letter or number 
+
+                - Objects (files) have a key
+                - The key is the FULL path:
+                      * s3://my-bucket/my_file.txt
+                      * s3://my-bucket/my_folder1/another_folder/my_file.txt 
+                - The key is composed of prefix + object name 
+                      * s3://my_bucket/my_folder1/another_folder/my_file.txt 
+                - There's no concept of "directories" within buckets 
+                - Object values are the content of the body:
+                      * Max Object Size is 5TB (5000GB)
+                      * If uploading more than 5 GB must use "multi-part upload"
+                - Metadata (list of text key /value pairs -system or user metadata) 
+                - Tags (Unicode key /value pair - up to 10) - useful for security / lifecycle 
+                - Version ID (if versioning s enabled) 
+
+            * S3 Websites 
+
+                - S3 can host static websites and have them accessible on the www
+                - The website URL will be:
+                      * <bucket-name>.s3-website-<AWS-region>.amazonaws.com 
+                      or
+                      * <bucket-name>.s3-website.<AWS-region>.amazonaws.com 
+                - If you get a 403 (Forbidden) error , make sure the bucket policy allows public read.
+
+            * Amazon S3 - Versioning 
+
+                - You can version your files in Amazon S3 
+                - It is enabled at the bucket level 
+                - Same key overwrite will increment the "version": 1,2,3...
+                - It is best practice to version your buckets 
+                     * Protect against unintended deletes (ability to restore a version) 
+                     * Easy roll back to previous version 
+                - Notes:
+                     * Any files that is not versioned prior to enabling versioning will have version "null"
+                     * Suspending versioning does not delete the previous versions 
+
+            * S3 Access Logs 
+
+                 - For audit purpose, you may want to log all access to S3 buckets 
+                 - Any request made to S3, from any account, authorised or denied, will be logged into another S3 bucket 
+                 - That data can be analysed using data analysis tools.
+                 - Very helpful to come down to the root cause of an issue, or auidt usage, view suspicious patterns , etc 
+
+
+            * S3 Replication (CRR & SRR) 
+
+                 - Must enable versioning in source and destination 
+                 - Cross Region Replication (CRR) 
+                 - Same Region Replication (SRR) 
+                 - Buckets can be in different accounts 
+                 - Copying is asynchronous 
+                 - Must give proper IAM permissions to S3 
+                 - CRR - Use cases: compliance, lower latency access, replication across accounts 
+                 - SRR - Use cases: log aggregation, live replication between production and test accounts 
+
+            * S3 Storage Classes 
+
+                 - Amazon S3 Standard-General Purpose 
+                 - Amazon S3 Standard-Infrequent Access (IA) 
+                 - Amazon S3 One Zone-Infrequent Access 
+                 - Amazon S3 Intelligent Tiering 
+                 - Amazon Glacier 
+                 - Amazon Glacier Deep Archive 
+                 - Amazon S 3 Reduced Redundancy Storage (deprecated - omitted) 
+
+                 * Durability:
+                     - High durability (99.99999999999%, 11 9's) of objects across multiple AZ 
+                     - If you store 10,000,000 objects with Amazon S3, you can on average expect to incur a loss of a single object once every 10,000 years
+                     - Same for all storage classes 
+                 * Availability:
+                     - Measures how readily available a service is 
+                     - S3 standard has 99.99% availability which means it will not be available 53 minutes a year. 
+
+
+
+         # Databases & Analytics 
+
+            * Databases Introduction 
+
+                - Databases are optimized for a purpose and come with different features, shapes and constraints.
+
+            * AWS RDS Overview 
+
+                - RDS stands for Relational Database Service 
+                - It's a managed DB service for DB use SQL as a query language.
+                - It allows you to create databases in the cloud that are managed by AWS 
+                     * Postgres 
+                     * MySQL 
+                     * MariaDB
+                     * Oracle 
+                     * Microsoft SQL Server
+
+            * Amazon Aurora 
+
+                - Aurora is a proprietary technology from AWS (not open sourced)
+                - PostgreSQL and MySQL are both supported as Aurora DB 
+                - Aurora is "AWS cloud optimized" and claims 5x performance improvement over MySQL on RDS, over 3x the performance of Postgres on RDS
+                - Aurora storage automatically grows in increments of 10 GB, up to 64 TB  
+                - Aurora costs more than RDS (20% more) - but is more efficient 
+
+            * Amazon ElastiCache Overview 
+
+                - The same way RDS is to get managed Relational Databases 
+                - ElastiCache is to get managed Redis or Memcached 
+                - Caches are in-memory databases with high performance, low latency
+                - Helps reduce load off databases for read intensive workloads
+                - AWS takes care of OS maintenance / patching , optimizations,setup, configuration, monitoring, failure recovery and backups   
+
+            * DynamoDB 
+             
+                - Fully Managed Highly available with replication across 3 AZ 
+                - NoSQL database - not a relational database 
+                - Scales to massive workloads, distributed "serverless" database 
+                - Millions of requests per seconds, trillions of row, 100s of TB storage 
+                - Fast and consistent in performance 
+                - Single-digit millisecond latency - low latency retrieval  
+
+            * Redshift Overview 
+
+                - Redshift is based on PostgreSQL, but it's not used for OLTP 
+                - It's OLAP - online analytical processing (analytics and data warehousing)
+                - Load data once every hour, not every second 
+                - 10x better performance than other data warehouses, scale to PBs of data 
+                - Columnar storage of data (instead of row based) 
+                - Massively Parallel Query Execution (MPP), highly available 
+                - Pay as you go based on the instances provisioned
+                - Has a SQL interface for performing the queries 
+
+            * Amazon EMR 
+
+                - EMR stands for "Elastic MapReduce"
+                - EMR helps creating Hadoop clusters (Big Data) to analyze and process vast amount of data.
+                - The clusters can be made of hundreds of EC2 instances 
+
+            * Athena Overview 
+                - Fully Serverless database with SQL capabilities 
+                - Used to query data in S3 
+                - Pay per query 
+                - Output results back to S3 
+                - Secured through IAM  
+
+         # ECS, Lambda, Batch, Lightsail 
+
+            * Docker 
+               
+               - Docker is a software development platform to deploy apps 
+               - Apps are packaged in containers that can be run on any OS 
+               - Apps run the same, regardless of where they 're run 
+                      * Any machine 
+                      * No compatibility issues
+                      * Predictable Behavior
+                      * Less work 
+                      * Easier to maintain and deploy 
+                      * Works with any language, any OS, any technology 
+               - Scale containers up and down very quickly 
+               - Docker images are stored in Docker Repositories
+               - Public: Docker Hub https://hub.docker.com/
+                      * Find base images for many technologies or OS:
+                      * Ubuntu
+                      * MySQL
+                      * NodeJS , Java ..
+               - Private: Amazon ECR (Elastic Container Registry)  
+
+            * ECS  
+              
+                - ECS = Elastic Container Service 
+                - Launch Docker containers on AWS 
+                - You must provision & maintain the infrastructure (the EC2 instances) 
+                - AWS takes care of starting / stopping containers 
+                - Has integrations with the Application Load Balancer 
+                 
+            * Fargate 
+
+                - Launch Docker containers on AWS 
+                - You do not provision the infrastructure 
+
+            * ECR 
+
+                - Elastic Container Registry 
+                - Private Docker Registry on AWS 
+                - This is where you store your Docker images so they can be run by ECS or Fargate  
+
+            * Lambda 
+
+                - Virtual functions - no servers to manage 
+                - Limited by time - short executions 
+                - Run on-demand 
+                - Scaling is automated 
+         
+         # Deployments & Managing Infrastructure at Scale 
+          
+            * CloudFormation is a declarative way of outlining your AWS Infrastructure for any resouces.
+            * For example, within a CloudFormation template you say:
+                  - I want a security group 
+                  - I want two EC2 instances using this security group 
+                  - I want an S3 bucket 
+                  - I want a load balancer (ELB) in front of these machines 
+            * Then CloudFormation creates those for you, in the right order, with the exact configuration that you specify 
+
+            * Elastic Beanstalk is developer centric view of deploying an application on AWS 
+            * It uses all the component's we've seen before:
+                 EC2, ASG, ELB, RDS etc..
+            * Beanstalk = Platform as a Service (PaaS) 
+            * Managed Service 
+               - Instance configuration / OS is handled by Beanstalk 
+               - Deployment strategy is configurable but performed by Elastic Beanstalk 
+            * Just the application code is the responsibility of the developer 
+            * Three architecture models:;
+                  - Single Instance deployment: good for dev 
+                  - LB + ASG : great for production or pre-production web applications 
+                  - ASG only: great for non-web apps in production (workers, etc..)  
+
+         # Leveraging the AWS Global Infrastructure 
+
+            - Route53 is Managed DNS (Domain Name System) 
+            - DNS is a collection of rules and records which helps clients understand how to reach a server through URLs.
+            - In AWS, the most common records are:
+                 * www.google.com => 12.34.56.78 == A record(IPv4)  
+
+         * AWS CloudFront 
+
+            - Content Delivery Network (CDN) 
+            - Improves read performance, content is cached at the edge 
+            - Improves users experience
+            - 216 Point of Presence globally (edge locations) 
+            - DDoS protection (because worldwide) , integration with Shield, AWS Web Application Firewall 
+
+         * CloudFront - Origins 
+
+           - S3 :
+               1. For distributing files and caching them at the edge.
+               2. Enhanced security with CloudFront Origin Access Identity (OAI) 
+               3. CloudFront can be used as an ingress (to upload files to S3) 
+
+            - Custom Origin (HTTP):
+              
+               1. Application Load Balancer 
+               2. EC2 instance 
+               3. S3 website (must first enable the bucket as a static S3 website) 
+               4. Any HTTP backend you want 
+                
+
+        #  Cloud Integrations 
+
+          * Amazon SQS - Simple Queue Service 
+              
+              - Oldest AWS offering (over 10 years old) 
+              - Fully managed service (~serverless) ,use to decouple applications 
+              - Scales from 1 message per second to 10,000s per second 
+              - Default retention of messages: 4 days, maximum of 14 days 
+              - No limit to how many messages can be in the queue 
+              - Messages are deleted after they're read by consumers 
+              - Low latency (<10 ms on publish and receive) 
+              - Consumers share the work to read messages and scale horizontally. 
+
+          * Amazon SNS 
+           
+              - The "event publishers" only sends message to one SNS topic
+              - As many "event subscribers" as we want to listen to the SNS topic notification. 
+              - Each subscriber to the topic will get all the messages 
+              - Up to 10,000,000 subscriptions per topic, 100,000 topics limit.
+              - SNS Subscribers can be:
+                    - HTTP /HTTPS 
+                    - Emails, SMS , Mobile Notifications 
+                    - SQS queues , Lambda Functions  
+
+        # Cloud Monitoring 
+            
+            * Amazon CloudWatch Metrics  
+               
+               - CloudWatch provides metrics for every services in AWS 
+               - Metric is a variable to monitor (CPUUtilization, Networkln..) 
+               - Metric have timestamps 
+               - Can create CloudWatch dashboards of metrics 
+               - Important Metrics :
+                  1. EC2 instances: CPU Utilization, status checks, Network (not RAM) 
+                                    - Default metrics every 5 minutes 
+                                    - Option for Detailed Monitoring($$$): metrics every 1 minutes
+                  2. EBS volumes: Disk Read/Writes
+                  3. S3 buckets: BucketSizeBytes, NumberOfObjects, AllRequests 
+                  4. Billing: Total Estimated Charge (only in us-east-1) 
+                  5. Service Limits: how much you've been using a service API 
+                  6. Custom metrics: push your own metrics  
+
+            * Amazon CloudWatch Alarms 
+                - Alarms are used  to trigger notifications for any metric 
+                - Alarms actions...
+                         - Auto Scaling: increase or decrease EC2 instances "desired" count
+                         - EC2 Actions: stop, terminate, reboot or recover an EC2 instance 
+                         - SNS notifications: send a notification into an SNS topic  
+
+            * Amazon CloudWatch Logs 
+
+                - CloudWatch Logs can collect log from:
+                      - Elastic Beanstalk: collection of logs from application 
+                      - ECS: collection from containers 
+                      - AWS Lambda: collection from function logs 
+                      - CloudTrail based on filter 
+                      - CloudWatch log agents: on EC2 machines or on-premises servers 
+                      - Route53: Log DNS queries 
+                - Enables real-time monitoring of logs
+                - Adjustable CloudWatch Logs retention  
+
+            * Amazon CloudWatch Events 
+              - Schedule: Cron jobs (scheduled scripts) 
+              - Event Pattern: Event rules to react to a service doing something
+              - Trigger Lambda functions, send SQS/SNS messages... 
+
+            * Amazon EventBridge 
+
+               - EventBridge is the next evolution of CloudWatch Events 
+               - Default event bus: generated by AWS services (CloudWatch Events) 
+               - Partner event bus: receive events from SaaS service or applications(Zendesk, DataDog, Segment)
+               - Custom Event buses: for your own applications
+               - Schema Registry: model event Schema 
+               - EventBridge has a different name to mark the new capabilities 
+
+            * AWS CloudTrail  
+               
+               - Provides governance, compliance and audit for your AWS Account 
+               - CloudTrail is enabled by default 
+               - Get an history of events  / API calls made within your AWS Account by:
+                     * Console
+                     * SDK
+                     * CLI 
+                     * AWS Services 
+               - Can put logs from CloudTrail into CloudWatch logs or S3 
+               - A trail can be applied to All Regions (default) or a single Region  
+
+        # VPC & Networking 
+
+            
+
+                - VPC - Virtual Private Cloud: Private network to deploy your resources 
+                - Subnets allow you to partition your network inside your VPC
+                - Internet Gateway: At the VPC level, provide Internet Access 
+                - NAT Gateway / Instances: give internet access to private Subnets 
+                - Security Groups: Stateful, operate at the EC2 instance level or ENI 
+                - VPC Peering: Connect two VPC with non overlapping IP ranges, nontransitive
+                - VPC Endpoints: Provide private access to AWS Services within VPC 
+                - VPC Flow Logs: Network traffic logs
+                - Site to Site VPN: VPN over public internet between on-premises DC and AWS 
+                - Direct Connect: Direct private connection to AWS 
+                - Transit Gateway: Connect thousands of VPC and on-premises networks together 
+
+        # Security and Compliance Section 
+
+            ## AWS shared Responsibility Model 
+
+                - AWS responsibility - * Security of the Cloud 
+                                       * Protecting infrastructure that runs all the AWS services
+                                       * Managed services like S3, DynamoDB, RDS etc.
+                - Customer responsibility - * Security of the cloud 
+                                            * Encrypting application data
+                - Shared controls - * Patch Management, Configuration Management, Awareness and Training 
+            
